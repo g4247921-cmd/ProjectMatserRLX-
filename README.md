@@ -44,5 +44,4 @@ StarterGui:SetCore("SendNotification", {
 	Title = "👑 Project MasterRLX",
 	Text = "Intro selesai — semua sistem aktif!",
 	Duration = 5
-})# ProjectMatserRLX-
-Hii welcome
+})
