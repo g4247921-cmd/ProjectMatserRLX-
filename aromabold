@@ -1,0 +1,91 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TelaPiscando"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(1, 0, 1, 0)
+frame.Position = UDim2.new(0, 0, 0, 0)
+frame.BackgroundColor3 = Color3.new(0, 0, 0)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Gambar jumpscare (FULLSCREEN, baru)
+local image = Instance.new("ImageLabel")
+image.Size = UDim2.new(1, 0, 1, 0)
+image.Position = UDim2.new(0, 0, 0, 0)
+image.BackgroundTransparency = 1
+image.ImageTransparency = 1
+image.Image = "rbxassetid://115095294469092"
+image.ZIndex = 1
+image.Parent = frame
+
+-- Label: "PROJECT BY MASTER"
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0, 100)
+label.Position = UDim2.new(0, 0, 0.4, 0)
+label.BackgroundTransparency = 1
+label.Text = "PROJECT BY MASTER"
+label.TextColor3 = Color3.new(1, 0, 0)
+label.Font = Enum.Font.GothamBlack
+label.TextScaled = true
+label.TextStrokeTransparency = 0
+label.ZIndex = 2
+label.Parent = frame
+
+-- Sound: Grito
+local grito = Instance.new("Sound")
+grito.SoundId = "rbxassetid://138186576"
+grito.Volume = 10
+grito.PlayOnRemove = true
+grito.Parent = workspace
+
+-- Sound: Facada
+local facada = Instance.new("Sound")
+facada.SoundId = "rbxassetid://9118828562"
+facada.Volume = 7
+facada.PlayOnRemove = true
+facada.Parent = workspace
+
+-- Sound: Tambahan
+local tambahan = Instance.new("Sound")
+tambahan.SoundId = "rbxassetid://136923704715029"
+tambahan.Volume = 10
+tambahan.PlayOnRemove = true
+tambahan.Parent = workspace
+
+-- Mainkan suara
+grito:Destroy()
+task.wait(1)
+facada:Destroy()
+tambahan:Destroy()
+
+-- Tampilkan jumpscare setelah 3 detik (fade in)
+task.delay(3, function()
+	for i = 1, 10 do
+		image.ImageTransparency = 1 - (i * 0.1)
+		task.wait(0.03)
+	end
+end)
+
+-- Efek blinking layar selama 30 detik
+local startTime = tick()
+local blinkTime = 30
+
+local blinking = RunService.RenderStepped:Connect(function()
+	local elapsed = tick() - startTime
+	if elapsed > blinkTime then
+		blinking:Disconnect()
+		screenGui:Destroy()
+		return
+	end
+
+	local t = math.floor(elapsed * 5) % 2
+	frame.BackgroundColor3 = (t == 0) and Color3.new(1, 1, 1) or Color3.new(0, 0, 0)
+end)
